@@ -21,7 +21,7 @@ const requestObject = {
   gzip: true,
 };
 
-corn.schedule("*/1 * * * *", () => {
+corn.schedule("*/59 * * * *", () => {
   request_promise(requestObject)
     .then((response) => collectData(response, site))
     .then(convertToJSON);
