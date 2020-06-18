@@ -28,18 +28,8 @@ corn.schedule("*/59 * * * *", () => {
     .then(convertToJSON);
 });
 
-app.get("/json/:name", function (req, res, next) {
-  var options = {
-    root: __dirname,
-    dotfiles: "deny",
-    headers: {
-      "x-timestamp": Date.now(),
-      "x-sent": true,
-    },
-  };
-
-  var fileName = req.params.name;
-  const file = fs.readFileSync(path.join(__dirname, `/${fileName}`), "utf-8");
+app.get("/json", function (req, res, next) {
+  const file = fs.readFileSync(path.join(__dirname, `/contests.json`), "utf-8");
   res.send(file);
 });
 const PORT = process.env.PORT || 3000;
