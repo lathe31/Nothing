@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const request_promise = require("request-promise");
 const corn = require("node-cron");
@@ -28,9 +27,24 @@ corn.schedule("*/59 * * * *", () => {
     .then(convertToJSON);
 });
 
-app.get("/json", function (req, res, next) {
-  const file = fs.readFileSync(path.join(__dirname, `/contests.json`), "utf-8");
-  res.send(file);
+app.get("/json/:name", function (req, res, next) {
+  var options = {
+    root: __dirname,
+    dotfiles: "deny",
+    headers: {
+      "x-timestamp": Date.now(),
+      "x-sent": true,
+    },
+  };
+
+  var fileName = req.params.name;
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log(`Sent: ${fileName}`);
+    }
+  });
 });
 const PORT = process.env.PORT || 3000;
 
