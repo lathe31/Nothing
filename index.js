@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const path = require("path");
 const request_promise = require("request-promise");
 const corn = require("node-cron");
@@ -38,13 +39,8 @@ app.get("/json/:name", function (req, res, next) {
   };
 
   var fileName = req.params.name;
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err);
-    } else {
-      console.log(`Sent: ${fileName}`);
-    }
-  });
+  const file = fs.readFileSync(path.join(__dirname, `/${fileName}`), "utf-8");
+  res.send(file);
 });
 const PORT = process.env.PORT || 3000;
 
