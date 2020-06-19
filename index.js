@@ -36,7 +36,7 @@ app.get("/json/:name", function (req, res, next) {
       "x-sent": true,
     },
   };
-
+  res.setHeader("Access-Control-Allow-Origin", "*");
   var fileName = req.params.name;
   res.sendFile(fileName, options, function (err) {
     if (err) {
